@@ -1,6 +1,6 @@
 {
   "name": "leaflet-gps-tracker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Customizable control to integrate navigator.geolocation.watchPosition functionalities in leaflet.",
   "main": "GPSControl.js",
   "scripts": {
