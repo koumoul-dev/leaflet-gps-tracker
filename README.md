@@ -1,6 +1,8 @@
 # leaflet-gps-tracker
 
-Customizable control to integrate navigator.geolocation functionalities in leaflet.
+Customizable control to integrate navigator.geolocation.watchPosition functionalities in leaflet.
+
+[Check it out](https://koumoul-dev.github.io/leaflet-gps-tracker/).
 
 ## Default options
 
