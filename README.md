@@ -12,16 +12,24 @@ In a CommonJS environment (probably webpack) :
 const GPSControl = require('leaflet-gps-tracker').GPSControl
 require('leaflet-gps-tracker/gps-control.css')
 
+...
 new GPSControl({}).addTo(map)
 ```
 
 Using browser globals (see the [source code of the demo](./index.html)):
 
-```js
-<link rel="stylesheet" href="vendor/leaflet-gps-vendor/gps-control.css" />
-<script src="vendor/leaflet-gps-vendor/GPSControl.js"></script>
-
-new GPSControl({}).addTo(map);
+```html
+<head>
+  ...
+  <link rel="stylesheet" href="vendor/leaflet-gps-vendor/gps-control.css" />
+  <script src="vendor/leaflet-gps-vendor/GPSControl.js"></script>
+</head>
+<body>
+  ...
+  <script>
+    new GPSControl({}).addTo(map);
+  </script>
+</body
 ```
 
 ## Default options
