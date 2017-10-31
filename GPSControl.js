@@ -42,7 +42,7 @@
       this._a = L.DomUtil.create('a', '', this._div);
       this._i = L.DomUtil.create('i', this.options.class || 'material-icons', this._a);
       setTimeout(function() {
-        _this.updateActive(_this.options.active)
+        _this.updateActive(_this.options.active);
       }, 100);
 
       this._a.addEventListener('click', function(e) {
@@ -80,7 +80,7 @@
         this._clearWatch();
       }
     },
-    _success(pos) {
+    _success: function(pos) {
       // should not be possible
       if (!this.active) return;
 
@@ -96,7 +96,7 @@
         this.options.successCallback(latlng);
       }
     },
-    _error(err) {
+    _error: function(err) {
       if (this.options.errorCallback) {
         this.options.errorCallback(err);
       }
@@ -104,7 +104,7 @@
       this._clearWatch()
       this.remove()
     },
-    _clearWatch() {
+    _clearWatch: function() {
       this._last = null;
       if (this._watchPosition) {
         navigator.geolocation.clearWatch(this._watchPosition);
