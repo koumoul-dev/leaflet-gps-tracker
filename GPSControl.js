@@ -56,6 +56,7 @@
       this._clearWatch();
     },
     updateActive: function(value) {
+      var _this = this;
       if (value === this.active) return;
       this.active = value;
       this._i.innerHTML = this.active ? this.options.offClass : this.options.onClass;
@@ -67,7 +68,11 @@
       if (this.active) {
         if (window.navigator && window.navigator.geolocation) {
           this._clearWatch();
-          this._watchPosition = window.navigator.geolocation.watchPosition(pos => this._success(pos), err => this._error(err), {enableHighAccuracy: true});
+          this._watchPosition = window.navigator.geolocation.watchPosition(
+            function(pos) { _this._success(pos); },
+            function(err) { _this._error(err); },
+            { enableHighAccuracy: true }
+          );
         } else {
           this._error(new Error('No valid window.navigator.geolocation object found (incompatible browser ?)'));
         }
