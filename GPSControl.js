@@ -19,10 +19,12 @@
       class: 'material-icons',
       offClass: 'gps_off',
       onClass: 'gps_fixed',
+      noTrackTitle: 'Locate with GPS',
       offTitle: 'Activate GPS tracking',
       onTitle: 'Deactivate GPS tracking',
       active: true,
       precision: 5,
+      track: true,
       activeCallback: function(active) {
         console.log('GPS tracking is active ? ' + active);
       },
@@ -42,11 +44,21 @@
       this._a = L.DomUtil.create('a', '', this._div);
       this._i = L.DomUtil.create('i', this.options.class || 'material-icons', this._a);
       setTimeout(function() {
-        _this.updateActive(_this.options.active);
+        if (_this.options.track) {
+          _this.updateActive(_this.options.active);
+        } else {
+          if (_this.options.active) {
+            _this.locate()
+          }
+        }
       }, 100);
 
       this._a.addEventListener('click', function(e) {
-        _this.updateActive(!_this.active);
+        if (_this.options.track) {
+          _this.updateActive(!_this.active);
+        } else {
+          _this.locate()
+        }
         e.stopPropagation();
       });
 
@@ -55,7 +67,25 @@
     onRemove: function(map) {
       this._clearWatch();
     },
+    locate: function() {
+      // Used when in one time GPS locating mode
+
+      var _this = this;
+      this._i.innerHTML = this.options.onClass;
+      this._a.title = this.options.noTrackTitle;
+      if (window.navigator && window.navigator.geolocation) {
+        window.navigator.geolocation.getCurrentPosition(
+          function(pos) { _this._success(pos); },
+          function(err) { _this._error(err); },
+          { enableHighAccuracy: true }
+        );
+      } else {
+        this._error(new Error('No valid window.navigator.geolocation object found (incompatible browser ?)'));
+      }
+    },
     updateActive: function(value) {
+      // Used when in active tracking mode
+
       var _this = this;
       if (value === this.active) return;
       this.active = value;
@@ -82,12 +112,12 @@
     },
     _success: function(pos) {
       // should not be possible
-      if (!this.active) return;
+      if (this.options.track && !this.active) return;
 
       const latlng = new L.LatLng(pos.coords.latitude, pos.coords.longitude);
 
       // Ignore smallest changes
-      if (this.options.precision > 0 && this._last && latlng.distanceTo(this._last) < this.options.precision) {
+      if (this.options.track && this.options.precision > 0 && this._last && latlng.distanceTo(this._last) < this.options.precision) {
         return;
       }
       this._last = latlng;

@@ -28,6 +28,7 @@
       }).addTo(map);
 
       new GPSControl({
+        track: true,
         activeCallback: active => {
           msg.innerHTML += 'GPS tracking is active ? ' + active + '<br/>';
         },
