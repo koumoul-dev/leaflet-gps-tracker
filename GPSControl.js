@@ -47,6 +47,8 @@
         if (_this.options.track) {
           _this.updateActive(_this.options.active);
         } else {
+          _this._i.innerHTML = _this.options.onClass;
+          _this._a.title = _this.options.noTrackTitle;
           if (_this.options.active) {
             _this.locate()
           }
@@ -71,13 +73,11 @@
       // Used when in one time GPS locating mode
 
       var _this = this;
-      this._i.innerHTML = this.options.onClass;
-      this._a.title = this.options.noTrackTitle;
 
       if (this._savedLast && this.options.successCallback) {
         this.options.successCallback(this._savedLast);
       }
-      
+
       if (window.navigator && window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(
           function(pos) { _this._success(pos); },
@@ -94,11 +94,17 @@
       var _this = this;
       if (value === this.active) return;
       this.active = value;
-      this._i.innerHTML = this.active ? this.options.offClass : this.options.onClass;
-      this._a.title = this.active ? this.options.onTitle : this.options.offTitle;
+
       if (this.options.activeCallback) {
         this.options.activeCallback(this.active);
       }
+
+      if (this.active && !this.options.track) {
+        return this.locate();
+      }
+
+      this._i.innerHTML = this.active ? this.options.offClass : this.options.onClass;
+      this._a.title = this.active ? this.options.onTitle : this.options.offTitle;
 
       if (this.active) {
         if (this._savedLast && this.options.successCallback) {

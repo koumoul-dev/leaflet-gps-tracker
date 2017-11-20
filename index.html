@@ -51,14 +51,16 @@
       var msg2 = document.getElementById('msg2');
       var map2 = L.map('map2');
       map2.setZoom(16);
+      map2.setView([47, 3]);
       new L.TileLayer('https://koumoul.com/s/tileserver/styles/klokantech-basic/{z}/{x}/{y}.png', {
         minZoom: 5,
         maxZoom: 20,
         attribution: '<a href="https://koumoul.com">© Koumoul</a> | <a href="http://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap contributors</a>'
       }).addTo(map2);
 
-      new GPSControl({
+      var gpsControl = new GPSControl({
         track: false,
+        active: false,
         successCallback: latlng => {
           msg2.innerHTML += 'GPS locating : ' + latlng + '<br/>';
           map2.setView(latlng);
@@ -67,6 +69,7 @@
           msg2.innerHTML += 'GPS locating failed : ' + error.message + '<br/>';
         }
       }).addTo(map2);
+      gpsControl.updateActive(true);
     </script>
 
     <style>
