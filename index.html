@@ -14,8 +14,15 @@
   <body>
     <h1>demo - leaflet-gps-tracker</h1>
 
+    <h2>Full location and tracking functionality</h2>
+
     <div id="map"></div>
     <div id="msg"></div>
+
+    <h2>Only location, no active tracking</h2>
+
+    <div id="map2"></div>
+    <div id="msg2"></div>
 
     <script>
       var msg = document.getElementById('msg');
@@ -40,6 +47,26 @@
           msg.innerHTML += 'GPS tracking failed : ' + error.message + '<br/>';
         }
       }).addTo(map);
+
+      var msg2 = document.getElementById('msg2');
+      var map2 = L.map('map2');
+      map2.setZoom(16);
+      new L.TileLayer('https://koumoul.com/s/tileserver/styles/klokantech-basic/{z}/{x}/{y}.png', {
+        minZoom: 5,
+        maxZoom: 20,
+        attribution: '<a href="https://koumoul.com">© Koumoul</a> | <a href="http://openmaptiles.org/" target="_blank">© OpenMapTiles</a> <a href="http://www.openstreetmap.org/about/" target="_blank">© OpenStreetMap contributors</a>'
+      }).addTo(map2);
+
+      new GPSControl({
+        track: false,
+        successCallback: latlng => {
+          msg2.innerHTML += 'GPS locating : ' + latlng + '<br/>';
+          map2.setView(latlng);
+        },
+        errorCallback: error => {
+          msg2.innerHTML += 'GPS locating failed : ' + error.message + '<br/>';
+        }
+      }).addTo(map2);
     </script>
 
     <style>
@@ -47,9 +74,9 @@
         width: 100%;
         height: 100%;
       }
-      #map {
+      .leaflet-container {
         width: 100%;
-        height: 50%;
+        height: 200px;
       }
     </style>
   </body>

@@ -73,6 +73,11 @@
       var _this = this;
       this._i.innerHTML = this.options.onClass;
       this._a.title = this.options.noTrackTitle;
+
+      if (this._savedLast && this.options.successCallback) {
+        this.options.successCallback(this._savedLast);
+      }
+      
       if (window.navigator && window.navigator.geolocation) {
         window.navigator.geolocation.getCurrentPosition(
           function(pos) { _this._success(pos); },
@@ -96,6 +101,10 @@
       }
 
       if (this.active) {
+        if (this._savedLast && this.options.successCallback) {
+          this.options.successCallback(this._savedLast);
+        }
+
         if (window.navigator && window.navigator.geolocation) {
           this._clearWatch();
           this._watchPosition = window.navigator.geolocation.watchPosition(
@@ -121,6 +130,7 @@
         return;
       }
       this._last = latlng;
+      this._savedLast = latlng;
 
       if (this.options.successCallback) {
         this.options.successCallback(latlng);
